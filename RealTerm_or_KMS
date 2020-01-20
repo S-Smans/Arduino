@@ -1,0 +1,27 @@
+int incomingByte = 0; // for incoming serial data
+bool greet = true;
+void setup() {
+  Serial.begin(115200); // opens serial port, sets data rate to 9600 bps
+}
+
+void loop() {
+  // send data only when you receive data:
+  if(greet){
+    Serial.println("Hello");
+    greet = false;
+  }
+  if(Serial.available() > 0) {
+    // read the incoming byte:
+    incomingByte = Serial.read();
+    if(incomingByte == 97){
+      Serial.println("Goodbye");
+      greet = true;
+      delay(5000);
+      }
+  else{
+    // say what you got:
+    Serial.print("I received: ");
+    Serial.println(incomingByte, DEC);
+    }
+  }
+}

@@ -1,1 +1,40 @@
 https://www.w3schools.com/code/tryit.asp?filename=GBCT1NZD4RQ7
+#include <ESP8266WiFi.h>
+#include <WiFiClient.h>
+#include <ESP8266WebServer.h>
+
+const char *ssid = "ElonM";
+const char *password = "SpaceX";
+
+// HTML text
+
+String html ="<h3>Rotacija fiksacijas punktos</h3> <form name=\"registrationForm\"> <input type=\"range\" name=\"rangeInput\" id=\"rangeInputId\" value=\"1\" min=\"1\" max=\"100\" oninput=\"rangeOutputId.value = rangeInputId.value\"> <output name=\"rangeOutputName\" id=\"rangeOutputId\">1</output> </form>" 
+             "<h3>Horizontalais novietojums</h3> <form name=\"registrationForm\"> <input type=\"range\" name=\"rangeInput\" id=\"rangeInputId\" value=\"1\" min=\"1\" max=\"100\" oninput=\"rangeOutputId.value = rangeInputId.value\"> <output name=\"rangeOutputName\" id=\"rangeOutputId\">1</output> </form>"
+             "<h3>Gaismas Rotacija</h3> <form name=\"registrationForm\"> <input type=\"range\" name=\"rangeInput\" id=\"rangeInputId\" value=\"1\" min=\"1\" max=\"100\" oninput=\"rangeOutputId.value = rangeInputId.value\"> <output name=\"rangeOutputName\" id=\"rangeOutputId\">1</output> </form>" 
+             "<h3>Augstums</h3> <form name=\"registrationForm\"> <input type=\"range\" name=\"rangeInput\" id=\"rangeInputId\" value=\"1\" min=\"1\" max=\"100\" oninput=\"rangeOutputId.value = rangeInputId.value\"> <output name=\"rangeOutputName\" id=\"rangeOutputId\">1</output> </form>" 
+             "<h3>Gaismas lenkis</h3> <form name=\"registrationForm\"> <input type=\"range\" name=\"rangeInput\" id=\"rangeInputId\" value=\"1\" min=\"1\" max=\"100\" oninput=\"rangeOutputId.value = rangeInputId.value\"> <output name=\"rangeOutputName\" id=\"rangeOutputId\">1</output> </form>"
+             "<style> .vertical { margin-top: -250px; margin-left: 500px; background-color: black; width: 7px; height: 200px; } .horizontal{ margin-top: -170px; margin-left: 470px; background-color: black; width: 200px; height: 7px; } </style> <div class=\"vertical\"></div> <div class=\"horizontal\"></div>";
+
+ESP8266WebServer server(80);
+void handleRoot() {
+  server.send(200, "text/html", html);
+}
+
+void setup() {
+  delay(1000);
+  Serial.begin(115200);
+  Serial.println();
+  Serial.print("Configuring access point...");
+  WiFi.softAP(ssid, password);
+
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+  server.on("/", handleRoot);
+  server.begin();
+  Serial.println("HTTP server started");
+}
+
+void loop() {
+  server.handleClient();
+}
